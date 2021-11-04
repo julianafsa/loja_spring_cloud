@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.netflix.discovery.DiscoveryClient;
 
+import br.com.alura.microservice.loja.client.FornecedorClient;
 import br.com.alura.microservice.loja.controller.dto.CompraDTO;
 import br.com.alura.microservice.loja.controller.dto.InfoFornecedorDTO;
 
@@ -15,31 +16,13 @@ import br.com.alura.microservice.loja.controller.dto.InfoFornecedorDTO;
 public class CompraService {
 	
 	@Autowired
-	private RestTemplate client;
-	
-//	@Autowired
-//	private DiscoveryClient eurekaClient;
+	private FornecedorClient fornecedorClient;
 
 	public void realizarCompra(CompraDTO compra) {
 		
-//		RestTemplate client = new RestTemplate();
-//		ResponseEntity<InfoFornecedorDTO> exchange = 
-//			client.exchange("http://localhost:8082/info" + compra.getEndereco().getEstado(),
-//			HttpMethod.GET, null, InfoFornecedorDTO.class);
-//		
-//		System.out.println(exchange.getBody().getEndereco());
-
-		ResponseEntity<InfoFornecedorDTO> exchange = 
-			client.exchange("http://fornecedor/info/" + compra.getEndereco().getEstado(),
-			HttpMethod.GET, null, InfoFornecedorDTO.class);
-		
-//		eurekaClient.getInstancesById("fornecedor").stream()
-//		.forEach(fornecedor -> {
-//			System.out.println("localhost" + fornecedor.getPort());
-//		});
-		
-		System.out.println(exchange.getBody().getEndereco());
-		
+		InfoFornecedorDTO info =
+			fornecedorClient.getInfoPorEstado(compra.getEndereco().getEstado());
+		System.out.println(info.getEndereco());
 	}
 
 }
